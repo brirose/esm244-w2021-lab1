@@ -33,3 +33,41 @@ top_5_status <- trees %>%
   slice_max(tree_count, n = 5)
 ```
 
+### Graph of top 5
+
+```{r}
+ggplot(data = top_5_status, aes(x = fct_reorder(legal_status, tree_count), 
+                                y = tree_count))+
+  geom_col()+
+  labs(x = "legal status", y = "tree count")+
+  coord_flip()+
+  theme_minimal()
+  
+```
+### more ex
+
+keep obs for blackwood acacia
+
+```{r}
+blackwood_acacia <- trees %>% 
+  filter(str_detect(species, "Blackwood Acacia")) %>% 
+  select(legal_status, date, latitude, longitude)
+
+ggplot(blackwood_acacia, aes(x = longitude, y = latitude))+
+  geom_point()
+```
+
+
+### seperate and unite
+
+```{r}
+sf_trees_sep <- trees %>% 
+  separate(species, into = c("spp_scientific", "spp_common"), sep = "::")
+```
+
+
+```{r}
+sf_trees_unite <- trees %>% 
+  unite("id_status", tree_id:legal_status, sep = "___")
+```
+
